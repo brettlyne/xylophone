@@ -10,8 +10,9 @@ const int MUX_SIG = 24; // Multiplexer signal pin
 // Piezo channels on the multiplexer
 const int PIEZO_C0 = 0;  // First piezo on channel 0
 const int PIEZO_C1 = 1;  // Second piezo on channel 1
+const int PIEZO_C2 = 2;  // Third piezo on channel 2
 
-bool printedLastLoop[2] = {false, false};  // Track if we printed in the previous loop for each piezo
+bool printedLastLoop[3] = {false, false, false};  // Track if we printed in the previous loop for each piezo
 
 void setup() {
   Serial.begin(9600);
@@ -44,18 +45,18 @@ void loop() {
     // Read the current channel
     int sensorValue = analogRead(MUX_SIG);
     
-    // Only process values from C0 and C1 channels
-    if (channel == PIEZO_C0 || channel == PIEZO_C1) {
-      if (sensorValue > 20 && !printedLastLoop[channel]) {
+    // Only process values from C0, C1, and C2 channels
+    if (channel == PIEZO_C0 || channel == PIEZO_C1 || channel == PIEZO_C2) {
+      if (sensorValue > 8 && !printedLastLoop[channel]) {
         Serial.print("Piezo ");
         Serial.print(channel);
         Serial.print(" value: ");
         Serial.println(sensorValue);
         printedLastLoop[channel] = true;
-      } else if (sensorValue <= 10) {
+      } else {
         printedLastLoop[channel] = false;  // Reset the flag when value drops below threshold
       }
     }
   }
-  delay(16);
+  delay(64);
 }
