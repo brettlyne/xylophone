@@ -7,7 +7,7 @@
 .App {
   width: 100vw;
   height: 100vh;
-  background: #1a1a1a;
+  background: #cecece;
 }
 
 canvas {
@@ -17,7 +17,7 @@ canvas {
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 
