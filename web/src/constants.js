@@ -43,3 +43,27 @@ export const colors = [
   "#FFFF00", // yellow
   "#00FF00", // green
 ];
+
+export const keyMap = {
+  KeyA: 55,
+  KeyW: 56,
+  KeyS: 57,
+  KeyE: 58,
+  KeyD: 59,
+  KeyF: 60,
+  KeyT: 61,
+  KeyG: 62,
+  KeyY: 63,
+  KeyH: 64,
+  KeyJ: 65,
+  KeyI: 66,
+  KeyK: 67,
+  KeyO: 68,
+  KeyL: 69,
+  KeyP: 70,
+  Semicolon: 71,
+  Quote: 72,
+  BracketRight: 73,
+  Enter: 74,
+  Backslash: 75,
+};

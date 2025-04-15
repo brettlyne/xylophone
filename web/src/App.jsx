@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
-import { useState, useRef } from "react";
-import { whiteNotes, blackNotes, colors } from "./constants";
+import { useState, useRef, useEffect } from "react";
+import { whiteNotes, blackNotes, colors, keyMap } from "./constants";
 import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
 import { Mallet, Reverb } from "smplr";
@@ -46,6 +46,24 @@ const Xylophone = () => {
       // duration: 0.1,
     });
   };
+
+  // Add keyboard event handling
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      // Check if the pressed key exists in our keyMap
+      if (keyMap[event.code]) {
+        playNote(keyMap[event.code]);
+      }
+    };
+
+    // Add event listener when component mounts
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up event listener when component unmounts
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [instrument]); // Re-run effect if instrument changes
 
   // Calculate positions for white keys
   const totalWhiteKeys = whiteNotes.length;
