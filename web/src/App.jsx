@@ -23,7 +23,7 @@ const Background = () => {
   return (
     <mesh>
       <planeGeometry args={[100, 100]} />
-      <meshBasicMaterial color="#cecece" />
+      <meshBasicMaterial color="#414141" />
     </mesh>
   );
 };
