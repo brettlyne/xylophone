@@ -161,7 +161,7 @@ const Xylophone = ({ onPlayNote }) => {
               note={note}
               midiNote={midi}
               onPlay={(note) => {
-                const position = [(left - 50) * 0.2, 5, 0];
+                const position = [(left - 50) * .75, -8, 0];
                 setKeyPositions(prev => ({ ...prev, [note]: position }));
                 playNote(note, position, brighterColors[colorIndex]);
               }}
@@ -182,7 +182,7 @@ const Xylophone = ({ onPlayNote }) => {
               midiNote={midi}
               isBlackKey={true}
               onPlay={(note) => {
-                const position = [(left - 50) * 0.2, 5, 0];
+                const position = [(left - 50) * .75, -8, 0];
                 setKeyPositions(prev => ({ ...prev, [note]: position }));
                 playNote(note, position, "#333333");
               }}
@@ -224,7 +224,7 @@ function App() {
           top: 0,
           left: 0,
           width: "100%",
-          height: "50%", // Only use top half of screen
+          height: "70%",
         }}
       >
         <color attach="background" args={['#f0f0f0']} />
