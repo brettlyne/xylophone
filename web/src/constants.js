@@ -44,7 +44,6 @@ export const colors = [
   "#00FF00", // green
 ];
 
-
 export const keyMap = {
   CapsLock: 55,  // G
   KeyQ: 56,      // G#
@@ -72,3 +71,33 @@ export const keyMap = {
   KeyX: 78,      // F#
   KeyC: 79,      // G
 };
+
+// Pre-calculate all note properties
+export const noteLookup = {};
+const totalWhiteKeys = whiteNotes.length;
+const spacing = 100 / totalWhiteKeys;
+
+// Add white notes to lookup
+whiteNotes.forEach(({ note, midi }, index) => {
+  const left = spacing * index + spacing / 2;
+  noteLookup[midi] = {
+    note,
+    midi,
+    position: [(left - 50) * 0.6, -5, 8],
+    color: colors[index % 7],
+    isBlackKey: false
+  };
+});
+
+// Add black notes to lookup
+blackNotes.forEach(({ note, midi }, index) => {
+  if (!note) return;
+  const left = spacing * index + spacing;
+  noteLookup[midi] = {
+    note,
+    midi,
+    position: [(left - 50) * 0.6, -5, 8],
+    color: "#333333",
+    isBlackKey: true
+  };
+});

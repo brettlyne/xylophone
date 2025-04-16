@@ -1,35 +1,14 @@
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
 import { useState, useRef, useEffect } from "react";
-import { whiteNotes, blackNotes, colors, keyMap } from "./constants";
+import { whiteNotes, blackNotes, keyMap, noteLookup, colors } from "./constants";
 import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
 import { Mallet, Reverb } from "smplr";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
-// Update colors to be brighter
-const brighterColors = [
-  "#00FFFF", // cyan
-  "#0000FF", // blue
-  "#FF1493", // dark pink
-  "#FF0000", // red
-  "#FFA500", // orange
-  "#FFFF00", // yellow
-  "#00FF00", // green
-];
-
-const Background = () => {
-  return (
-    <mesh>
-      <planeGeometry args={[100, 100]} />
-      <meshBasicMaterial color="#414141" />
-    </mesh>
-  );
-};
-
-// Ground plane component
-const Ground = () => {
+const GroundPlane = () => {
   const [ref] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0],
     position: [0, -10, 0],
@@ -42,23 +21,26 @@ const Ground = () => {
   );
 };
 
-// New component for launching cubes
-const LaunchingCube = ({ position, color }) => {
+const LaunchingCube = ({ position, color, isBlackKey }) => {
   const [ref, api] = useBox(() => ({
     mass: 1,
     position,
-    args: [2, 2, 2], // Back to 2x2 cubes
+    args: isBlackKey ? [1, 1, 1] : [2, 2, 2], // Smaller size for spheres
   }));
 
   useEffect(() => {
     // Apply an upward and slightly inward force
     const xForce = -position[0] * 0.1; // Force toward center
-    api.applyImpulse([xForce, 20, 0], [0, 0, 0]);
+    api.applyImpulse([xForce, 18, -5], [0, 0, 0]);
   }, []);
 
   return (
     <mesh ref={ref} castShadow>
-      <boxGeometry args={[2, 2, 2]} />
+      {isBlackKey ? (
+        <sphereGeometry args={[1, 16, 16]} />
+      ) : (
+        <boxGeometry args={[2, 2, 2]} />
+      )}
       <meshStandardMaterial 
         color={color} 
         emissive={color}
@@ -90,32 +72,25 @@ const Xylophone = ({ onPlayNote }) => {
     });
   };
 
-  const playNote = (note, position, color) => {
+  const playNote = (midiNote) => {
     if (!instrument) return;
+    const noteData = noteLookup[midiNote];
+    if (!noteData) return;
+
     instrument.start({
-      note: note,
+      note: midiNote,
       velocity: 100,
       detune: 0,
     });
-    onPlayNote(note, position, color);
+    setKeyPositions(prev => ({ ...prev, [midiNote]: noteData.position }));
+    onPlayNote(midiNote, noteData.position, noteData.color, noteData.isBlackKey);
   };
 
   // Add keyboard event handling
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (keyMap[event.code]) {
-        const note = keyMap[event.code];
-        // Find if this is a black key
-        const isBlackKey = blackNotes.some(n => n.midi === note);
-        // Calculate position based on the note's position in the sequence
-        const index = Object.values(keyMap).indexOf(note);
-        const left = (index * (100 / Object.keys(keyMap).length)) + (100 / Object.keys(keyMap).length / 2);
-        const position = [(left - 50) * 0.4, 5, 0];
-        setKeyPositions(prev => ({ ...prev, [note]: position }));
-        
-        // Use black color for black keys, otherwise find the white note index for color
-        const color = isBlackKey ? "#333333" : brighterColors[whiteNotes.findIndex(n => n.midi === note) % 7];
-        playNote(note, position, color);
+        playNote(keyMap[event.code]);
       }
     };
 
@@ -159,20 +134,15 @@ const Xylophone = ({ onPlayNote }) => {
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         {/* White keys */}
         {whiteNotes.map(({ note, midi }, index) => {
-          const colorIndex = index % 7;
           const left = spacing * index + spacing / 2;
           return (
             <XylophoneKey
               key={`white-${index}`}
               left={left}
-              color={brighterColors[colorIndex]}
+              color={colors[index % 7]}
               note={note}
               midiNote={midi}
-              onPlay={(note) => {
-                const position = [(left - 50) * 0.4, 5, 0];
-                setKeyPositions(prev => ({ ...prev, [note]: position }));
-                playNote(note, position, brighterColors[colorIndex]);
-              }}
+              onPlay={() => playNote(midi)}
             />
           );
         })}
@@ -189,11 +159,7 @@ const Xylophone = ({ onPlayNote }) => {
               note={note}
               midiNote={midi}
               isBlackKey={true}
-              onPlay={(note) => {
-                const position = [(left - 50) * 0.4, 5, 0];
-                setKeyPositions(prev => ({ ...prev, [note]: position }));
-                playNote(note, position, "#333333");
-              }}
+              onPlay={() => playNote(midi)}
             />
           );
         })}
@@ -205,11 +171,12 @@ const Xylophone = ({ onPlayNote }) => {
 function App() {
   const [cubes, setCubes] = useState([]);
 
-  const handlePlayNote = (note, position, color) => {
+  const handlePlayNote = (note, position, color, isBlackKey) => {
     const newCube = {
       id: Date.now(),
       position: [position[0], position[1], position[2]],
       color: color,
+      isBlackKey: isBlackKey
     };
     setCubes((prev) => [...prev, newCube]);
   };
@@ -225,7 +192,7 @@ function App() {
       }}
     >
       <Canvas
-        camera={{ position: [0, 15, 30], fov: 50 }}
+        camera={{ position: [0, 15, 30], fov: 50, far: 1000 }}
         shadows
         style={{
           position: "absolute",
@@ -235,23 +202,29 @@ function App() {
           height: "70%",
         }}
       >
-        <color attach="background" args={['#f0f0f0']} />
+        <color attach="background" args={['#1a1a1a']} />
         <ambientLight intensity={0.5} />
         <directionalLight
-          position={[10, 10, 5]}
+          position={[20, 20, 10]}
           intensity={1}
           castShadow
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
+          shadow-mapSize-width={2048}
+          shadow-mapSize-height={2048}
+          shadow-camera-left={-100}
+          shadow-camera-right={100}
+          shadow-camera-top={100}
+          shadow-camera-bottom={-100}
+          shadow-camera-near={0.1}
+          shadow-camera-far={200}
         />
         <Physics gravity={[0, -9.81, 0]}>
-          <Background />
-          <Ground />
+          <GroundPlane />
           {cubes.map((cube) => (
             <LaunchingCube
               key={cube.id}
               position={cube.position}
               color={cube.color}
+              isBlackKey={cube.isBlackKey}
             />
           ))}
         </Physics>
