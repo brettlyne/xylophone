@@ -1,18 +1,23 @@
 #include <Arduino.h>
 
-// MUX control pins
+// MUX A control pins
 const int MUX_S0 = 5;  // Connected to S0
 const int MUX_S1 = 4;  // Connected to S1
 const int MUX_S2 = 3;  // Connected to S2
 const int MUX_S3 = 2;  // Connected to S3
-const int MUX_SIG = 24; // Multiplexer signal pin
+const int MUX_A_SIG = 24; // Multiplexer A signal pin
 
-// Piezo channels on the multiplexer
-const int PIEZO_C0 = 0;  // First piezo on channel 0
-const int PIEZO_C1 = 1;  // Second piezo on channel 1
-const int PIEZO_C2 = 2;  // Third piezo on channel 2
+// Direct analog pins for remaining inputs
+const int DIRECT_PINS[] = {25, 26, 27, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 38, 39, 40, 41};
+const int NUM_DIRECT_PINS = sizeof(DIRECT_PINS) / sizeof(DIRECT_PINS[0]);
 
-bool printedLastLoop[3] = {false, false, false};  // Track if we printed in the previous loop for each piezo
+// Arrays to store peak values
+int peakValues_D[NUM_DIRECT_PINS] = {0};
+int peakValues_A[16] = {0};
+
+// Timer for peak reset
+unsigned long lastPeakReset = 0;
+const unsigned long PEAK_RESET_INTERVAL = 1000; // Reset peaks every 1000ms (1 second)
 
 void setup() {
   Serial.begin(9600);
@@ -24,7 +29,12 @@ void setup() {
   pinMode(MUX_S3, OUTPUT);
   
   // Set up MUX signal pin as input
-  pinMode(MUX_SIG, INPUT);
+  pinMode(MUX_A_SIG, INPUT);
+  
+  // Set up direct pins as inputs
+  for (int i = 0; i < NUM_DIRECT_PINS; i++) {
+    pinMode(DIRECT_PINS[i], INPUT);
+  }
 }
 
 void setMuxChannel(byte channel) {
@@ -35,28 +45,45 @@ void setMuxChannel(byte channel) {
 }
 
 void loop() {
-  // Loop through all 16 channels
-  for (byte channel = 0; channel < 16; channel++) {
-    setMuxChannel(channel);
+  // Check if it's time to reset peak values
+  unsigned long currentTime = millis();
+  if (currentTime - lastPeakReset >= PEAK_RESET_INTERVAL) {
+    memset(peakValues_D, 0, sizeof(peakValues_D));
+    memset(peakValues_A, 0, sizeof(peakValues_A));
+    lastPeakReset = currentTime;
+    Serial.println("---"); // Print separator when resetting peaks
+  }
+  
+  // Read direct pins and update peaks
+  for (int i = 0; i < NUM_DIRECT_PINS; i++) {
+    int sensorValue = analogRead(DIRECT_PINS[i]);
+    peakValues_D[i] = max(peakValues_D[i], sensorValue);
     
-    // Small delay to allow the mux to settle
-    delayMicroseconds(5);
+    Serial.print("D");
+    Serial.print(DIRECT_PINS[i]);
+    Serial.print(":\t");
+    Serial.print(peakValues_D[i]);
+    Serial.print("\t\t");
     
-    // Read the current channel
-    int sensorValue = analogRead(MUX_SIG);
-    
-    // Only process values from C0, C1, and C2 channels
-    if (channel == PIEZO_C0 || channel == PIEZO_C1 || channel == PIEZO_C2) {
-      if (sensorValue > 8 && !printedLastLoop[channel]) {
-        Serial.print("Piezo ");
-        Serial.print(channel);
-        Serial.print(" value: ");
-        Serial.println(sensorValue);
-        printedLastLoop[channel] = true;
-      } else {
-        printedLastLoop[channel] = false;  // Reset the flag when value drops below threshold
-      }
+    if ((i + 1) % 3 == 0) {  // Print newline every 3 readings for readability
+      Serial.println();
     }
   }
-  delay(64);
+  Serial.println();
+  
+  // Read multiplexer A and update peaks
+  for (byte channel = 0; channel < 16; channel++) {
+    setMuxChannel(channel);
+    delayMicroseconds(100);
+    
+    int sensorValue_A = analogRead(MUX_A_SIG);
+    peakValues_A[channel] = max(peakValues_A[channel], sensorValue_A);
+    
+    Serial.print("A");
+    Serial.print(channel);
+    Serial.print(":\t");
+    Serial.println(peakValues_A[channel]);
+  }
+  
+  delay(40);
 }
