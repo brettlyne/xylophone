@@ -23,12 +23,15 @@ const XylophoneKey = ({
   };
 
   const handleMouseDown = () => {
-    console.log(`MIDI Note: ${midiNote}`);
     onPlay(midiNote);
   };
 
   return (
-    <div style={keyStyle} onMouseDown={handleMouseDown}>
+    <div 
+      style={keyStyle} 
+      onMouseDown={handleMouseDown}
+      className={`midi-${midiNote}`}
+    >
       <div
         style={{
           position: "absolute",

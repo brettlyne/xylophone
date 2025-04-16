@@ -7,6 +7,7 @@ import { getAudioContext } from "./util";
 import { Mallet, Reverb } from "smplr";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import gsap from "gsap";
 
 const GroundPlane = () => {
   const [ref] = usePlane(() => ({
@@ -84,6 +85,21 @@ const Xylophone = ({ onPlayNote }) => {
     });
     setKeyPositions(prev => ({ ...prev, [midiNote]: noteData.position }));
     onPlayNote(midiNote, noteData.position, noteData.color, noteData.isBlackKey);
+
+    // Animate the key
+    const keyElement = document.querySelector(`.midi-${midiNote}`);
+    if (keyElement) {
+      gsap.killTweensOf(keyElement);
+      
+      gsap.fromTo(keyElement, 
+        { scale: 1.05 },
+        { 
+          scale: 1.0,
+          duration: 0.35,
+          ease: "power2.out"
+        }
+      );
+    }
   };
 
   // Add keyboard event handling
