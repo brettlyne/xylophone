@@ -44,26 +44,31 @@ export const colors = [
   "#00FF00", // green
 ];
 
+
 export const keyMap = {
-  KeyA: 55,
-  KeyW: 56,
-  KeyS: 57,
-  KeyE: 58,
-  KeyD: 59,
-  KeyF: 60,
-  KeyT: 61,
-  KeyG: 62,
-  KeyY: 63,
-  KeyH: 64,
-  KeyJ: 65,
-  KeyI: 66,
-  KeyK: 67,
-  KeyO: 68,
-  KeyL: 69,
-  KeyP: 70,
-  Semicolon: 71,
-  Quote: 72,
-  BracketRight: 73,
-  Enter: 74,
-  Backslash: 75,
+  CapsLock: 55,  // G
+  KeyQ: 56,      // G#
+  KeyA: 57,      // A
+  KeyW: 58,      // A#
+  KeyS: 59,      // B
+  KeyD: 60,      // C
+  KeyR: 61,      // C#
+  KeyF: 62,      // D
+  KeyT: 63,      // D#
+  KeyG: 64,      // E
+  KeyY: 65,      // F
+  KeyH: 66,      // F#
+  KeyJ: 67,      // G
+  KeyK: 68,      // G#
+  KeyL: 69,      // A
+  KeyP: 70,      // A#
+  Semicolon: 71, // B
+  Quote: 72,     // C
+  BracketRight: 73, // C#
+  Enter: 74,     // D
+  Backslash: 75, // D#
+  ShiftRight: 76, // E
+  KeyZ: 77,      // F
+  KeyX: 78,      // F#
+  KeyC: 79,      // G
 };

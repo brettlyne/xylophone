@@ -105,9 +105,17 @@ const Xylophone = ({ onPlayNote }) => {
     const handleKeyDown = (event) => {
       if (keyMap[event.code]) {
         const note = keyMap[event.code];
-        const position = keyPositions[note];
-        const colorIndex = (note - 55) % 7;
-        playNote(note, position, brighterColors[colorIndex]);
+        // Find if this is a black key
+        const isBlackKey = blackNotes.some(n => n.midi === note);
+        // Calculate position based on the note's position in the sequence
+        const index = Object.values(keyMap).indexOf(note);
+        const left = (index * (100 / Object.keys(keyMap).length)) + (100 / Object.keys(keyMap).length / 2);
+        const position = [(left - 50) * 0.4, 5, 0];
+        setKeyPositions(prev => ({ ...prev, [note]: position }));
+        
+        // Use black color for black keys, otherwise find the white note index for color
+        const color = isBlackKey ? "#333333" : brighterColors[whiteNotes.findIndex(n => n.midi === note) % 7];
+        playNote(note, position, color);
       }
     };
 
@@ -115,7 +123,7 @@ const Xylophone = ({ onPlayNote }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [instrument, keyPositions]);
+  }, [instrument]);
 
   // Calculate positions for white keys
   const totalWhiteKeys = whiteNotes.length;
@@ -161,7 +169,7 @@ const Xylophone = ({ onPlayNote }) => {
               note={note}
               midiNote={midi}
               onPlay={(note) => {
-                const position = [(left - 50) * .75, -8, 0];
+                const position = [(left - 50) * 0.4, 5, 0];
                 setKeyPositions(prev => ({ ...prev, [note]: position }));
                 playNote(note, position, brighterColors[colorIndex]);
               }}
@@ -182,7 +190,7 @@ const Xylophone = ({ onPlayNote }) => {
               midiNote={midi}
               isBlackKey={true}
               onPlay={(note) => {
-                const position = [(left - 50) * .75, -8, 0];
+                const position = [(left - 50) * 0.4, 5, 0];
                 setKeyPositions(prev => ({ ...prev, [note]: position }));
                 playNote(note, position, "#333333");
               }}
