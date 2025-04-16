@@ -55,18 +55,18 @@ export const keyMap = {
   KeyF: 62,      // D
   KeyT: 63,      // D#
   KeyG: 64,      // E
-  KeyY: 65,      // F
-  KeyH: 66,      // F#
+  KeyH: 65,      // F
+  KeyU: 66,      // F#
   KeyJ: 67,      // G
-  KeyK: 68,      // G#
-  KeyL: 69,      // A
-  KeyP: 70,      // A#
-  Semicolon: 71, // B
-  Quote: 72,     // C
-  BracketRight: 73, // C#
-  Enter: 74,     // D
-  Backslash: 75, // D#
-  ShiftRight: 76, // E
+  KeyI: 68,      // G#
+  KeyK: 69,      // A
+  KeyO: 70,      // A#
+  KeyL: 71,      // B
+  Semicolon: 72, // C
+  BracketLeft: 73, // C#
+  Quote: 74,     // D
+  BracketRight: 75, // D#
+  Enter: 76,      // E
   KeyZ: 77,      // F
   KeyX: 78,      // F#
   KeyC: 79,      // G
