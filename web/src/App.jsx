@@ -10,11 +10,39 @@ import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import gsap from "gsap";
 import { div } from "three/tsl";
 
-const GroundPlane = () => {
-  const [ref] = usePlane(() => ({
+const GroundPlane = ({ shake }) => {
+  const [ref, api] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0],
     position: [0, -10, 0],
   }));
+
+  useEffect(() => {
+    if (shake) {
+      // Store original position
+      const originalPosition = [0, -10, 0];
+      
+      // Create a timeline for the animation
+      const tl = gsap.timeline();
+      
+      // First frame: instantly move up
+      api.position.set(0, -9.5, 0);
+      
+      // Animate back down
+      tl.to({}, {
+        duration: 0.2,
+        ease: "power2.out",
+        onUpdate: () => {
+          const progress = tl.progress();
+          const currentY = -9.5 + (progress * -0.5); // Interpolate from -9.5 to -10
+          api.position.set(0, currentY, 0);
+        },
+        onComplete: () => {
+          api.position.set(...originalPosition);
+        }
+      });
+    }
+  }, [shake, api]);
+
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[100, 100]} />
@@ -52,7 +80,7 @@ const LaunchingCube = ({ position, color, isBlackKey }) => {
   );
 };
 
-const Xylophone = ({ onPlayNote }) => {
+const Xylophone = ({ onPlayNote, setShake }) => {
   const [instrument, setInstrument] = useState(null);
   const [drumMachine, setDrumMachine] = useState(null);
   const [isReady, setIsReady] = useState(false);
@@ -121,6 +149,8 @@ const Xylophone = ({ onPlayNote }) => {
       if (drumMachine && drumKeyMap[event.code]) {
         event.preventDefault();
         drumMachine.start({ note: drumKeyMap[event.code] });
+        setShake(true);
+        setTimeout(() => setShake(false), 100);
         return;
       }
       
@@ -135,7 +165,7 @@ const Xylophone = ({ onPlayNote }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [instrument, drumMachine]);
+  }, [instrument, drumMachine, setShake]);
 
   // Calculate positions for white keys
   const totalWhiteKeys = whiteNotes.length;
@@ -224,6 +254,7 @@ const Xylophone = ({ onPlayNote }) => {
 
 function App() {
   const [cubes, setCubes] = useState([]);
+  const [shake, setShake] = useState(false);
 
   const handlePlayNote = (note, position, color, isBlackKey) => {
     const newCube = {
@@ -272,7 +303,7 @@ function App() {
           shadow-camera-far={200}
         />
         <Physics gravity={[0, -9.81, 0]}>
-          <GroundPlane />
+          <GroundPlane shake={shake} />
           {cubes.map((cube) => (
             <LaunchingCube
               key={cube.id}
@@ -290,7 +321,7 @@ function App() {
           />
         </EffectComposer>
       </Canvas>
-      <Xylophone onPlayNote={handlePlayNote} />
+      <Xylophone onPlayNote={handlePlayNote} setShake={setShake} />
     </div>
   );
 }
