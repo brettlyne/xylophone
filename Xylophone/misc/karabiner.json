@@ -1,0 +1,910 @@
+{
+  "description": "Disable every key except certain ones",
+  "manipulators": [
+    {
+      "from": { "key_code": "caps_lock" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_control" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_shift" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_option" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_command" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_control" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_shift" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_option" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_command" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "escape" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "delete_forward" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "spacebar" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "non_us_pound" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "semicolon" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "quote" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "grave_accent_and_tilde" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "comma" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "period" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "slash" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "non_us_backslash" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "up_arrow" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "down_arrow" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_arrow" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_arrow" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "page_up" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "page_down" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "home" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "end" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f1" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f2" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f3" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f4" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f5" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f6" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f7" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f8" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f9" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f10" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f11" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f12" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f13" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f14" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f15" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f16" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f17" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f18" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f19" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f20" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f21" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f22" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f23" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "f24" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_num_lock" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_slash" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_asterisk" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_hyphen" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_plus" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_enter" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_1" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_2" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_3" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_4" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_5" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_6" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_7" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_8" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_9" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_0" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_period" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_equal_sign" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_comma" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_none" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "print_screen" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "scroll_lock" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "pause" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "insert" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "application" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "help" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "power" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "execute" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "menu" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "select" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "stop" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "again" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "undo" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "cut" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "copy" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "paste" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "find" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international1" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international2" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international3" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international4" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international5" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international6" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international7" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international8" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "international9" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang1" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang2" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang3" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang4" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang5" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang6" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang7" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang8" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "lang9" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "japanese_eisuu" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "japanese_kana" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "japanese_pc_nfer" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "japanese_pc_xfer" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "japanese_pc_katakana" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_control" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_shift" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_option" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_command" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_control" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_shift" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_option" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_command" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "fn" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "keypad_equal_sign_as400" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "locking_caps_lock" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "locking_num_lock" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "locking_scroll_lock" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "alternate_erase" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "sys_req_or_attention" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "cancel" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "clear" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "prior" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "return" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "separator" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "out" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "oper" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "clear_or_again" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "cr_sel_or_props" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "ex_sel" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_alt" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "left_gui" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_alt" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "right_gui" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_brightness_down" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_brightness_up" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_mission_control" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_launchpad" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_dashboard" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_illumination_down" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_illumination_up" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_previous" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_play" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "vk_consumer_next" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "volume_down" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "volume_up" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "display_brightness_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "display_brightness_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "rewind" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "play_or_pause" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "fastforward" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "mute" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "volume_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "volume_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "apple_display_brightness_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "apple_display_brightness_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "dashboard" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "launchpad" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "mission_control" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "fn" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "apple_top_case_display_brightness_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "apple_top_case_display_brightness_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "illumination_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "illumination_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "display_brightness_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "display_brightness_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "rewind" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "play_or_pause" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "mute" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "volume_decrement" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "volume_increment" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "menu" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "eject" },
+      "to": [],
+      "type": "basic"
+    },
+    {
+      "from": { "key_code": "fastforward" },
+      "to": [],
+      "type": "basic"
+    }
+  ]
+}
