@@ -45,31 +45,31 @@ export const colors = [
 ];
 
 export const keyMap = {
-  CapsLock: 55,  // G
-  KeyQ: 56,      // G#
-  KeyA: 57,      // A
-  KeyW: 58,      // A#
-  KeyS: 59,      // B
-  KeyD: 60,      // C
-  KeyR: 61,      // C#
-  KeyF: 62,      // D
-  KeyT: 63,      // D#
-  KeyG: 64,      // E
-  KeyH: 65,      // F
-  KeyU: 66,      // F#
-  KeyJ: 67,      // G
-  KeyI: 68,      // G#
-  KeyK: 69,      // A
-  KeyO: 70,      // A#
-  KeyL: 71,      // B
-  Semicolon: 72, // C
-  BracketLeft: 73, // C#
-  Quote: 74,     // D
-  BracketRight: 75, // D#
-  Enter: 76,      // E
-  KeyZ: 77,      // F
-  KeyX: 78,      // F#
-  KeyC: 79,      // G
+  Tab: 55, // G
+  Digit1: 56, // G#
+  KeyQ: 57, // A
+  Digit2: 58, // A#
+  KeyW: 59, // B
+  KeyE: 60, // C
+  Digit4: 61, // C#
+  KeyR: 62, // D
+  Digit5: 63, // D#
+  KeyT: 64, // E
+  KeyY: 65, // F
+  Digit7: 66, // F#
+  KeyU: 67, // G
+  Digit8: 68, // G#
+  KeyI: 69, // A
+  Digit9: 70, // A#
+  KeyO: 71, // B
+  KeyP: 72, // C
+  Minus: 73, // C#
+  BracketLeft: 74, // D
+  Equal: 75, // D#
+  BracketRight: 76, // E
+  Backslash: 77, // F
+  Backspace: 78, // F#
+  Enter: 79, // G
 };
 
 // Pre-calculate all note properties
