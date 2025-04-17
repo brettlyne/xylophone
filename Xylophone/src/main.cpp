@@ -7,21 +7,33 @@ const int MUX_S2 = 3;  // Connected to S2
 const int MUX_S3 = 2;  // Connected to S3
 const int MUX_A_SIG = 24; // Multiplexer A signal pin
 
-// Direct analog pins for remaining inputs
-const int DIRECT_PINS[] = {25, 26, 27, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 38, 39, 40, 41};
-const int NUM_DIRECT_PINS = sizeof(DIRECT_PINS) / sizeof(DIRECT_PINS[0]);
+// Pin to letter mapping
+struct PinMapping {
+  int pin;          // Pin number (or mux channel if isMux is true)
+  char letter;      // Corresponding letter
+  bool isMux;       // Whether this is a mux input
+  bool triggered;   // Track if currently triggered
+  int lowCount;     // Count of consecutive low readings
+};
 
-// Arrays to store peak values
-int peakValues_D[NUM_DIRECT_PINS] = {0};
-int peakValues_A[16] = {0};
+PinMapping pins[] = {
+  {39, 'a', false, false, 0},
+  {38, 's', false, false, 0},
+  {40, 'd', false, false, 0},
+  {41, 'f', false, false, 0},
+  {25, 'g', false, false, 0},
+  {26, 'z', false, false, 0},
+  {27, 'x', false, false, 0},
+  {14, 'c', true,  false, 0},  // Mux input 14
+  {3,  'v', true,  false, 0}   // Mux input 3
+};
 
-// Timer for peak reset
-unsigned long lastPeakReset = 0;
-const unsigned long PEAK_RESET_INTERVAL = 1000; // Reset peaks every 1000ms (1 second)
+const int NUM_PINS = sizeof(pins) / sizeof(pins[0]);
+const int TRIGGER_THRESHOLD = 50;
+const int RESET_THRESHOLD = 30;
+const int LOW_COUNT_REQUIRED = 2;
 
 void setup() {
-  Serial.begin(9600);
-  
   // Set up MUX control pins as outputs
   pinMode(MUX_S0, OUTPUT);
   pinMode(MUX_S1, OUTPUT);
@@ -32,8 +44,10 @@ void setup() {
   pinMode(MUX_A_SIG, INPUT);
   
   // Set up direct pins as inputs
-  for (int i = 0; i < NUM_DIRECT_PINS; i++) {
-    pinMode(DIRECT_PINS[i], INPUT);
+  for (int i = 0; i < NUM_PINS; i++) {
+    if (!pins[i].isMux) {
+      pinMode(pins[i].pin, INPUT);
+    }
   }
 }
 
@@ -45,44 +59,38 @@ void setMuxChannel(byte channel) {
 }
 
 void loop() {
-  // Check if it's time to reset peak values
-  unsigned long currentTime = millis();
-  if (currentTime - lastPeakReset >= PEAK_RESET_INTERVAL) {
-    memset(peakValues_D, 0, sizeof(peakValues_D));
-    memset(peakValues_A, 0, sizeof(peakValues_A));
-    lastPeakReset = currentTime;
-    Serial.println("---"); // Print separator when resetting peaks
-  }
-  
-  // Read direct pins and update peaks
-  for (int i = 0; i < NUM_DIRECT_PINS; i++) {
-    int sensorValue = analogRead(DIRECT_PINS[i]);
-    peakValues_D[i] = max(peakValues_D[i], sensorValue);
+  // Read and process each pin
+  for (int i = 0; i < NUM_PINS; i++) {
+    int sensorValue;
     
-    Serial.print("D");
-    Serial.print(DIRECT_PINS[i]);
-    Serial.print(":\t");
-    Serial.print(peakValues_D[i]);
-    Serial.print("\t\t");
-    
-    if ((i + 1) % 3 == 0) {  // Print newline every 3 readings for readability
-      Serial.println();
+    // Read the value
+    if (pins[i].isMux) {
+      setMuxChannel(pins[i].pin);  // For mux inputs, pin holds the channel number
+      delayMicroseconds(100);
+      sensorValue = analogRead(MUX_A_SIG);
+    } else {
+      sensorValue = analogRead(pins[i].pin);
     }
-  }
-  Serial.println();
-  
-  // Read multiplexer A and update peaks
-  for (byte channel = 0; channel < 16; channel++) {
-    setMuxChannel(channel);
-    delayMicroseconds(100);
     
-    int sensorValue_A = analogRead(MUX_A_SIG);
-    peakValues_A[channel] = max(peakValues_A[channel], sensorValue_A);
-    
-    Serial.print("A");
-    Serial.print(channel);
-    Serial.print(":\t");
-    Serial.println(peakValues_A[channel]);
+    // Process the reading
+    if (sensorValue > TRIGGER_THRESHOLD && !pins[i].triggered && pins[i].lowCount >= LOW_COUNT_REQUIRED) {
+      Keyboard.print(pins[i].letter);
+      
+      pins[i].triggered = true;
+      pins[i].lowCount = 0;
+    } 
+    else if (sensorValue <= RESET_THRESHOLD) {
+      if (pins[i].triggered) {
+        pins[i].lowCount++;
+        if (pins[i].lowCount >= LOW_COUNT_REQUIRED) {
+          pins[i].triggered = false;
+        }
+      } else {
+        pins[i].lowCount = min(pins[i].lowCount + 1, LOW_COUNT_REQUIRED);
+      }
+    } else {
+      pins[i].lowCount = 0;
+    }
   }
   
   delay(40);
