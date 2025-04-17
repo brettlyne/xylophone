@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
 import { useState, useRef, useEffect } from "react";
-import { whiteNotes, blackNotes, keyMap, noteLookup, colors } from "./constants";
+import { whiteNotes, blackNotes, keyMap, noteLookup, colors, drumKeyMap } from "./constants";
 import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
 import { Mallet, Reverb, DrumMachine } from "smplr";
@@ -117,7 +117,16 @@ const Xylophone = ({ onPlayNote }) => {
   // Add keyboard event handling
   useEffect(() => {
     const handleKeyDown = (event) => {
+      // Check for drum sounds first
+      if (drumMachine && drumKeyMap[event.code]) {
+        event.preventDefault();
+        drumMachine.start({ note: drumKeyMap[event.code] });
+        return;
+      }
+      
+      // Then check for piano sounds
       if (keyMap[event.code]) {
+        event.preventDefault();
         playNote(keyMap[event.code]);
       }
     };
@@ -126,7 +135,7 @@ const Xylophone = ({ onPlayNote }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [instrument]);
+  }, [instrument, drumMachine]);
 
   // Calculate positions for white keys
   const totalWhiteKeys = whiteNotes.length;
@@ -135,9 +144,9 @@ const Xylophone = ({ onPlayNote }) => {
   return (
     <div style={{ position: "relative", width: "100%", height: "100vh" }}>
 
-      {/* 
-      Just used to explore the drum machine options
-      {drumMachine && (
+      
+      {/* Just used to explore the drum machine options */}
+      {/* {drumMachine && (
         drumMachine?.getGroupNames().map((group) => (
           <div>
             <h2>{group}</h2>
