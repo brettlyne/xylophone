@@ -56,3 +56,33 @@ canvas {
 .read-the-docs {
   color: #888;
 }
+
+.controls-panel {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  z-index: 1000;
+  transition: opacity 0.3s ease;
+}
+
+.controls-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.control-button {
+  padding: 8px 16px;
+  background: #2b6e77;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.control-button.paused {
+  background: #4CAF50;
+}

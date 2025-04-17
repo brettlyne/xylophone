@@ -8,7 +8,6 @@ import { Mallet, Reverb, DrumMachine } from "smplr";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import gsap from "gsap";
-import { div } from "three/tsl";
 
 const GroundPlane = ({ shake }) => {
   const [ref, api] = usePlane(() => ({
@@ -257,6 +256,7 @@ function App() {
   const [shake, setShake] = useState(false);
   const [showControls, setShowControls] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const handlePlayNote = (note, position, color, isBlackKey) => {
     const newCube = {
@@ -276,6 +276,16 @@ function App() {
     setIsPaused(!isPaused);
   };
 
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
   return (
     <div
       className="App"
@@ -287,48 +297,29 @@ function App() {
       }}
     >
       <div
-        style={{
-          position: "absolute",
-          top: 20,
-          right: 20,
-          opacity: showControls ? 1 : 0,
-          transition: "opacity 0.3s ease",
-          padding: "10px",
-          background: "rgba(0, 0, 0, 0.5)",
-          borderRadius: "8px",
-          zIndex: 1000,
-        }}
+        className="controls-panel"
+        style={{ opacity: showControls ? 1 : 0 }}
         onMouseEnter={() => setShowControls(true)}
         onMouseLeave={() => setShowControls(false)}
       >
-        <div style={{ display: "flex", gap: "8px" }}>
+        <div className="controls-buttons">
           <button
             onClick={clearCubes}
-            style={{
-              padding: "8px 16px",
-              background: "#2b6e77",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "14px",
-            }}
+            className="control-button"
           >
             Clear Cubes
           </button>
           <button
             onClick={togglePause}
-            style={{
-              padding: "8px 16px",
-              background: isPaused ? "#4CAF50" : "#2b6e77",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-              fontSize: "14px",
-            }}
+            className={`control-button ${isPaused ? 'paused' : ''}`}
           >
             {isPaused ? "Resume" : "Pause"}
+          </button>
+          <button
+            onClick={toggleFullscreen}
+            className="control-button"
+          >
+            {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
           </button>
         </div>
       </div>
