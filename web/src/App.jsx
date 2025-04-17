@@ -55,14 +55,14 @@ const LaunchingCube = ({ position, color, isBlackKey }) => {
   const [ref, api] = useBox(() => ({
     mass: 1,
     position,
-    args: isBlackKey ? [1, 1, 1] : [2, 2, 2], // Smaller size for spheres
+    args: isBlackKey ? [1, 1, 1] : [2, 2, 2],
   }));
 
   useEffect(() => {
     // Apply an upward and slightly inward force
     const xForce = -position[0] * 0.1; // Force toward center
     api.applyImpulse([xForce, 18, -5], [0, 0, 0]);
-  }, []);
+  }, [api, position]);
 
   return (
     <mesh ref={ref} castShadow>
@@ -255,6 +255,8 @@ const Xylophone = ({ onPlayNote, setShake }) => {
 function App() {
   const [cubes, setCubes] = useState([]);
   const [shake, setShake] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
   const handlePlayNote = (note, position, color, isBlackKey) => {
     const newCube = {
@@ -264,6 +266,14 @@ function App() {
       isBlackKey: isBlackKey
     };
     setCubes((prev) => [...prev, newCube]);
+  };
+
+  const clearCubes = () => {
+    setCubes([]);
+  };
+
+  const togglePause = () => {
+    setIsPaused(!isPaused);
   };
 
   return (
@@ -276,6 +286,52 @@ function App() {
         overflow: "hidden",
       }}
     >
+      <div
+        style={{
+          position: "absolute",
+          top: 20,
+          right: 20,
+          opacity: showControls ? 1 : 0,
+          transition: "opacity 0.3s ease",
+          padding: "10px",
+          background: "rgba(0, 0, 0, 0.5)",
+          borderRadius: "8px",
+          zIndex: 1000,
+        }}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(false)}
+      >
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button
+            onClick={clearCubes}
+            style={{
+              padding: "8px 16px",
+              background: "#2b6e77",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            Clear Cubes
+          </button>
+          <button
+            onClick={togglePause}
+            style={{
+              padding: "8px 16px",
+              background: isPaused ? "#4CAF50" : "#2b6e77",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "14px",
+            }}
+          >
+            {isPaused ? "Resume" : "Pause"}
+          </button>
+        </div>
+      </div>
       <Canvas
         camera={{ position: [0, 15, 30], fov: 50, far: 1000 }}
         shadows
@@ -302,7 +358,7 @@ function App() {
           shadow-camera-near={0.1}
           shadow-camera-far={200}
         />
-        <Physics gravity={[0, -9.81, 0]}>
+        <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
           <GroundPlane shake={shake} />
           {cubes.map((cube) => (
             <LaunchingCube
