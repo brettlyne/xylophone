@@ -72,6 +72,18 @@ export const keyMap = {
   Enter: 79, // G
 };
 
+export const drumKeyMap = {
+  KeyA: "clap/cp",
+  KeyS: "cymbal/cy0000",
+  KeyD: "hihat-open/oh00",
+  KeyF: "kick/bd1000",
+  KeyG: "maraca/ma",
+  KeyZ: "mid-tom/mt10",
+  KeyX: "rimshot/rs",
+  KeyC: "snare/sd0010",
+  KeyV: "tom-hi/ht25",
+};
+
 // Pre-calculate all note properties
 export const noteLookup = {};
 const totalWhiteKeys = whiteNotes.length;
@@ -83,7 +95,7 @@ whiteNotes.forEach(({ note, midi }, index) => {
   noteLookup[midi] = {
     note,
     midi,
-    position: [(left - 50) * 0.6, -5, 8],
+    position: [(left - 50) * 0.6, -5, 12],
     color: colors[index % 7],
     isBlackKey: false
   };
@@ -96,7 +108,7 @@ blackNotes.forEach(({ note, midi }, index) => {
   noteLookup[midi] = {
     note,
     midi,
-    position: [(left - 50) * 0.6, -5, 8],
+    position: [(left - 50) * 0.6, -5, 12],
     color: "#333333",
     isBlackKey: true
   };

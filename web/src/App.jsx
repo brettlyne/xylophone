@@ -1,20 +1,47 @@
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
 import { useState, useRef, useEffect } from "react";
-import { whiteNotes, blackNotes, keyMap, noteLookup, colors } from "./constants";
+import { whiteNotes, blackNotes, keyMap, noteLookup, colors, drumKeyMap } from "./constants";
 import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
 import { Mallet, Reverb, DrumMachine } from "smplr";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Pixelation } from "@react-three/postprocessing";
 import gsap from "gsap";
-import { div } from "three/tsl";
 
-const GroundPlane = () => {
-  const [ref] = usePlane(() => ({
+const GroundPlane = ({ shake }) => {
+  const [ref, api] = usePlane(() => ({
     rotation: [-Math.PI / 2, 0, 0],
     position: [0, -10, 0],
   }));
+
+  useEffect(() => {
+    if (shake) {
+      // Store original position
+      const originalPosition = [0, -10, 0];
+      
+      // Create a timeline for the animation
+      const tl = gsap.timeline();
+      
+      // First frame: instantly move up
+      api.position.set(0, -9.5, 0);
+      
+      // Animate back down
+      tl.to({}, {
+        duration: 0.2,
+        ease: "power2.out",
+        onUpdate: () => {
+          const progress = tl.progress();
+          const currentY = -9.5 + (progress * -0.5); // Interpolate from -9.5 to -10
+          api.position.set(0, currentY, 0);
+        },
+        onComplete: () => {
+          api.position.set(...originalPosition);
+        }
+      });
+    }
+  }, [shake, api]);
+
   return (
     <mesh ref={ref} receiveShadow>
       <planeGeometry args={[100, 100]} />
@@ -27,14 +54,14 @@ const LaunchingCube = ({ position, color, isBlackKey }) => {
   const [ref, api] = useBox(() => ({
     mass: 1,
     position,
-    args: isBlackKey ? [1, 1, 1] : [2, 2, 2], // Smaller size for spheres
+    args: isBlackKey ? [1, 1, 1] : [2, 2, 2],
   }));
 
   useEffect(() => {
     // Apply an upward and slightly inward force
     const xForce = -position[0] * 0.1; // Force toward center
     api.applyImpulse([xForce, 18, -5], [0, 0, 0]);
-  }, []);
+  }, [api, position]);
 
   return (
     <mesh ref={ref} castShadow>
@@ -52,7 +79,7 @@ const LaunchingCube = ({ position, color, isBlackKey }) => {
   );
 };
 
-const Xylophone = ({ onPlayNote }) => {
+const Xylophone = ({ onPlayNote, setShake }) => {
   const [instrument, setInstrument] = useState(null);
   const [drumMachine, setDrumMachine] = useState(null);
   const [isReady, setIsReady] = useState(false);
@@ -117,7 +144,18 @@ const Xylophone = ({ onPlayNote }) => {
   // Add keyboard event handling
   useEffect(() => {
     const handleKeyDown = (event) => {
+      // Check for drum sounds first
+      if (drumMachine && drumKeyMap[event.code]) {
+        event.preventDefault();
+        drumMachine.start({ note: drumKeyMap[event.code] });
+        setShake(true);
+        setTimeout(() => setShake(false), 100);
+        return;
+      }
+      
+      // Then check for piano sounds
       if (keyMap[event.code]) {
+        event.preventDefault();
         playNote(keyMap[event.code]);
       }
     };
@@ -126,7 +164,7 @@ const Xylophone = ({ onPlayNote }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [instrument]);
+  }, [instrument, drumMachine, setShake]);
 
   // Calculate positions for white keys
   const totalWhiteKeys = whiteNotes.length;
@@ -135,9 +173,9 @@ const Xylophone = ({ onPlayNote }) => {
   return (
     <div style={{ position: "relative", width: "100%", height: "100vh" }}>
 
-      {/* 
-      Just used to explore the drum machine options
-      {drumMachine && (
+      
+      {/* Just used to explore the drum machine options */}
+      {/* {drumMachine && (
         drumMachine?.getGroupNames().map((group) => (
           <div>
             <h2>{group}</h2>
@@ -215,6 +253,11 @@ const Xylophone = ({ onPlayNote }) => {
 
 function App() {
   const [cubes, setCubes] = useState([]);
+  const [shake, setShake] = useState(false);
+  const [showControls, setShowControls] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pixelation, setPixelation] = useState(8);
 
   const handlePlayNote = (note, position, color, isBlackKey) => {
     const newCube = {
@@ -224,6 +267,31 @@ function App() {
       isBlackKey: isBlackKey
     };
     setCubes((prev) => [...prev, newCube]);
+  };
+
+  const clearCubes = () => {
+    setCubes([]);
+  };
+
+  const togglePause = () => {
+    setIsPaused(!isPaused);
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  const togglePixelation = () => {
+    const values = [0, 4, 8, 16];
+    const currentIndex = values.indexOf(pixelation);
+    const nextIndex = (currentIndex + 1) % values.length;
+    setPixelation(values[nextIndex]);
   };
 
   return (
@@ -236,6 +304,39 @@ function App() {
         overflow: "hidden",
       }}
     >
+      <div
+        className="controls-panel"
+        style={{ opacity: showControls ? 1 : 0 }}
+        onMouseEnter={() => setShowControls(true)}
+        onMouseLeave={() => setShowControls(false)}
+      >
+        <div className="controls-buttons">
+          <button
+            onClick={clearCubes}
+            className="control-button"
+          >
+            Clear Cubes
+          </button>
+          <button
+            onClick={togglePause}
+            className={`control-button ${isPaused ? 'paused' : ''}`}
+          >
+            {isPaused ? "Resume" : "Pause"}
+          </button>
+          <button
+            onClick={toggleFullscreen}
+            className="control-button"
+          >
+            {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+          </button>
+          <button
+            onClick={togglePixelation}
+            className="control-button"
+          >
+            Pixelation: {pixelation}
+          </button>
+        </div>
+      </div>
       <Canvas
         camera={{ position: [0, 15, 30], fov: 50, far: 1000 }}
         shadows
@@ -262,8 +363,8 @@ function App() {
           shadow-camera-near={0.1}
           shadow-camera-far={200}
         />
-        <Physics gravity={[0, -9.81, 0]}>
-          <GroundPlane />
+        <Physics gravity={[0, -9.81, 0]} isPaused={isPaused}>
+          <GroundPlane shake={shake} />
           {cubes.map((cube) => (
             <LaunchingCube
               key={cube.id}
@@ -279,9 +380,12 @@ function App() {
             luminanceThreshold={0.1}
             luminanceSmoothing={0.9}
           />
+          <Pixelation
+            granularity={pixelation}
+          />
         </EffectComposer>
       </Canvas>
-      <Xylophone onPlayNote={handlePlayNote} />
+      <Xylophone onPlayNote={handlePlayNote} setShake={setShake} />
     </div>
   );
 }
