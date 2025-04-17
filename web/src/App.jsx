@@ -6,7 +6,7 @@ import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
 import { Mallet, Reverb, DrumMachine } from "smplr";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { EffectComposer, Bloom, Pixelation } from "@react-three/postprocessing";
 import gsap from "gsap";
 
 const GroundPlane = ({ shake }) => {
@@ -257,6 +257,7 @@ function App() {
   const [showControls, setShowControls] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [pixelation, setPixelation] = useState(8);
 
   const handlePlayNote = (note, position, color, isBlackKey) => {
     const newCube = {
@@ -284,6 +285,13 @@ function App() {
       document.exitFullscreen();
       setIsFullscreen(false);
     }
+  };
+
+  const togglePixelation = () => {
+    const values = [0, 4, 8, 16];
+    const currentIndex = values.indexOf(pixelation);
+    const nextIndex = (currentIndex + 1) % values.length;
+    setPixelation(values[nextIndex]);
   };
 
   return (
@@ -320,6 +328,12 @@ function App() {
             className="control-button"
           >
             {isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+          </button>
+          <button
+            onClick={togglePixelation}
+            className="control-button"
+          >
+            Pixelation: {pixelation}
           </button>
         </div>
       </div>
@@ -365,6 +379,9 @@ function App() {
             intensity={1.0}
             luminanceThreshold={0.1}
             luminanceSmoothing={0.9}
+          />
+          <Pixelation
+            granularity={pixelation}
           />
         </EffectComposer>
       </Canvas>
