@@ -4,10 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import { whiteNotes, blackNotes, keyMap, noteLookup, colors } from "./constants";
 import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
-import { Mallet, Reverb } from "smplr";
+import { Mallet, Reverb, DrumMachine } from "smplr";
 import { Physics, useBox, usePlane } from "@react-three/cannon";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
 import gsap from "gsap";
+import { div } from "three/tsl";
 
 const GroundPlane = () => {
   const [ref] = usePlane(() => ({
@@ -53,6 +54,7 @@ const LaunchingCube = ({ position, color, isBlackKey }) => {
 
 const Xylophone = ({ onPlayNote }) => {
   const [instrument, setInstrument] = useState(null);
+  const [drumMachine, setDrumMachine] = useState(null);
   const [isReady, setIsReady] = useState(false);
   const reverb = useRef(null);
   const [keyPositions, setKeyPositions] = useState({});
@@ -67,6 +69,16 @@ const Xylophone = ({ onPlayNote }) => {
     newPiano.output.addEffect("reverb", reverb.current, 0.75);
     setInstrument(newPiano);
 
+    const newDrumMachine = new DrumMachine(context, {
+      instrument: "TR-808",
+      volume: 100,
+    });
+    // newDrumMachine.output.addEffect("reverb", reverb.current, 0.25);
+    setDrumMachine(newDrumMachine);
+
+    newDrumMachine.load.then(() => {
+      console.log("drums loaded");
+    });
     newPiano.load.then(() => {
       console.log("loaded");
       setIsReady(true);
@@ -122,6 +134,23 @@ const Xylophone = ({ onPlayNote }) => {
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100vh" }}>
+
+      {/* 
+      Just used to explore the drum machine options
+      {drumMachine && (
+        drumMachine?.getGroupNames().map((group) => (
+          <div>
+            <h2>{group}</h2>
+            {drumMachine?.getSampleNamesForGroup(group).map((sample) => (
+              <button onClick={() => {
+                drumMachine.start({note: sample})
+                console.log(sample)
+              }}>{sample}</button>
+            ))}
+          </div>
+        ))
+      )} */}
+
       {!isReady && (
         <div
           style={{
