@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import "./App.css";
 import { useState, useRef, useEffect } from "react";
-import { whiteNotes, blackNotes, keyMap, noteLookup, colors, drumKeyMap } from "./constants";
+import { whiteNotes, blackNotes, keyMap, noteLookup, colors, drumKeyMap, symbolMap } from "./constants";
 import XylophoneKey from "./XylophoneKey";
 import { getAudioContext } from "./util";
 import { Mallet, Reverb, DrumMachine } from "smplr";

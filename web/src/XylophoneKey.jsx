@@ -1,4 +1,5 @@
 import { getContrastColor } from "./util";
+import { keyMap, symbolMap } from "./constants";
 
 const XylophoneKey = ({
   left,
@@ -26,6 +27,10 @@ const XylophoneKey = ({
     onPlay(midiNote);
   };
 
+  // Find the key in keyMap that matches this midiNote
+  const keyCode = Object.entries(keyMap).find(([_, value]) => value === midiNote)?.[0];
+  const symbol = keyCode ? symbolMap[keyCode] : '';
+
   return (
     <div 
       style={keyStyle} 
@@ -45,6 +50,27 @@ const XylophoneKey = ({
       >
         {note}
       </div>
+      {!isBlackKey && (
+        <div
+          style={{
+            position: "absolute",
+            top: "60%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            color: getContrastColor(color),
+            fontWeight: 500,
+            fontSize: "1rem",
+            padding: "4px 8px",
+            border: "3px solid",
+            borderColor: getContrastColor(color),
+            borderRadius: "4px",
+            minWidth: "24px",
+            textAlign: "center",
+          }}
+        >
+          {symbol}
+        </div>
+      )}
     </div>
   );
 };

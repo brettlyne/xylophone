@@ -72,6 +72,34 @@ export const keyMap = {
   Enter: 79, // G
 };
 
+export const symbolMap = {
+  Tab: "Tab", // G
+  Digit1: "1", // G#
+  KeyQ: "Q", // A
+  Digit2: "2", // A#
+  KeyW: "W", // B
+  KeyE: "E", // C
+  Digit4: "4", // C#
+  KeyR: "R", // D
+  Digit5: "5", // D#
+  KeyT: "T", // E
+  KeyY: "Y", // F
+  Digit7: "7", // F#
+  KeyU: "U", // G
+  Digit8: "8", // G#
+  KeyI: "I", // A
+  Digit9: "9", // A#
+  KeyO: "O", // B
+  KeyP: "P", // C
+  Minus: "-", // C#
+  BracketLeft: "[", // D
+  Equal: "=", // D#
+  BracketRight: "]", // E
+  Backslash: "\\", // F
+  Backspace: "Backspace", // F#
+  Enter: "Enter", // G
+};
+
 export const drumKeyMap = {
   KeyA: "clap/cp",
   KeyS: "cymbal/cy0000",
